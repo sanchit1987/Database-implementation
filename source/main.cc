@@ -20,21 +20,21 @@ int main () {
 	}
 
 	// suck up the schema from the file
-	Schema lineitem ("catalog", "lineitem");
+	Schema region ("catalog", "region");
 
 	// grow the CNF expression from the parse tree 
 	CNF myComparison;
 	Record literal;
-	myComparison.GrowFromParseTree (final, &lineitem, literal);
+	myComparison.GrowFromParseTree (final, &region, literal);
 	
 	// print out the comparison to the screen
 	myComparison.Print ();
 
 	// now open up the text file and start procesing it
-        FILE *tableFile = fopen ("/home/sanchit/Documents/project1/a1test/tables/lineitem.tbl", "r");
+        FILE *tableFile = fopen ("/home/sanchit/Documents/dbiProject/tables/region.tbl", "r");
 
         Record temp;
-        Schema mySchema ("catalog", "lineitem");
+        Schema mySchema ("catalog", "region");
 
 	//char *bits = literal.GetBits ();
 	//cout << " numbytes in rec " << ((int *) bits)[0] << endl;

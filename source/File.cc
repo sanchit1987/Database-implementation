@@ -28,6 +28,12 @@ Page :: ~Page () {
 }
 
 
+int Page :: GetNoOfRecords(){
+	
+	return numRecs;
+	
+}
+
 void Page :: EmptyItOut () {
 
 	// get rid of all of the records
@@ -56,9 +62,14 @@ int Page :: GetFirst (Record *firstOne) {
 	// and remove it
 	myRecs->Remove (firstOne);
 	numRecs--;
+	
+	
+	//cout<<numRecs<<"\n";
 
 	char *b = firstOne->GetBits();
 	curSizeInBytes -= ((int *) b)[0];
+	
+
 
 	return 1;
 }
@@ -163,15 +174,22 @@ File :: ~File () {
 }
 
 
-void File :: GetPage (Page *putItHere, off_t whichPage) {
+int File :: GetFilDes(){
+	
+	return myFilDes;
+	
+}
+
+
+int File :: GetPage (Page *putItHere, off_t whichPage) {
 
 	// this is because the first page has no data
 	whichPage++;
 
 	if (whichPage >= curLength) {
-		cerr << "whichPage " << whichPage << " length " << curLength << endl;
-		cerr << "BAD: you tried to read past the end of the file\n";
-		exit (1);
+		//cerr << "whichPage " << whichPage << " length " << curLength << endl;
+		//cerr << "BAD: you tried to read past the end of the file\n";
+		return 0;
 	}
 
 	// read in the specified page
@@ -179,13 +197,15 @@ void File :: GetPage (Page *putItHere, off_t whichPage) {
 	if (bits == NULL)
 	{
 		cout << "ERROR : Not enough memory. EXIT !!!\n";
-		exit(1);
+		return 0;
 	}
 
 	lseek (myFilDes, PAGE_SIZE * whichPage, SEEK_SET);
 	read (myFilDes, bits, PAGE_SIZE);
 	putItHere->FromBinary (bits);
 	delete [] bits;
+	
+	return 1;
 	
 }
 
@@ -228,7 +248,7 @@ void File :: AddPage (Page *addMe, off_t whichPage) {
 }
 
 
-void File :: Open (int fileLen, char *fName) {
+int File :: Open (int fileLen, char *fName) {
 
 	// figure out the flags for the system open call
         int mode;
@@ -247,13 +267,13 @@ void File :: Open (int fileLen, char *fName) {
 	// see if there was an error
 	if (myFilDes < 0) {
 		cerr << "BAD!  Open did not work for " << fName << "\n";
-		exit (1);
+		return 0;
 	}
 
 	// read in the buffer if needed
 	if (fileLen != 0) {
 
-		// read in the first few bits, which is the page size
+		// read in the first few bits, which is the no of pages
 		lseek (myFilDes, 0, SEEK_SET);
 		read (myFilDes, &curLength, sizeof (off_t));
 
