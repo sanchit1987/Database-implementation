@@ -1,9 +1,12 @@
-#include <stdio.h>
-#include <iostream>
-#include <stdlib.h>
-#include <string.h>
-
 #include "Comparison.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <sstream>
+
+#include "Record.h"
+#include "Schema.h"
 
 
 Comparison::Comparison()
@@ -117,6 +120,21 @@ void OrderMaker :: Print () {
 	}
 }
 
+string OrderMaker::ToString() {
+	ostringstream ss;
+	ss << numAtts << endl;
+	for (int i = 0; i < numAtts; i++) {
+		ss << whichAtts[i] << " ";
+		if (whichTypes[i] == Int)
+			ss << 0 << "\n";
+		else if (whichTypes[i] == Double)
+			ss << 1 << "\n";
+		else
+			ss << 2 << "\n";
+	}
+	return ss.str();
+}
+
 
 
 int CNF :: GetSortOrders (OrderMaker &left, OrderMaker &right) {
@@ -143,7 +161,7 @@ int CNF :: GetSortOrders (OrderMaker &left, OrderMaker &right) {
 		// now verify that it operates over atts from both tables
 		if (!((orList[i][0].operand1 == Left && orList[i][0].operand2 == Right) ||
 		      (orList[i][0].operand2 == Left && orList[i][0].operand1 == Right))) {
-			continue;		
+			//continue;		
 		}
 
 		// since we are here, we have found a join attribute!!!

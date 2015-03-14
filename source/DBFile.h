@@ -7,8 +7,10 @@
 #include "File.h"
 #include "Comparison.h"
 #include "ComparisonEngine.h"
+#include "GenericDBFile.h"
+#include "HeapDBFile.h"
+#include "SortedDBFile.h"
 
-typedef enum {heap, sorted, tree} fType;
 
 // stub DBFile header..replace it with your own DBFile.h 
 
@@ -29,9 +31,8 @@ public:
 	int GetNext (Record &fetchme, CNF &cnf, Record &literal);
 
 private :
-	 File file_obj;
-	 Page page_obj;
-	 off_t atPageNo = 0;
+
+GenericDBFile *gdb;
 
 };
 #endif

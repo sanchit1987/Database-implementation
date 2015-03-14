@@ -11,10 +11,10 @@
 enum Target {Left, Right, Literal};
 enum CompOperator {LessThan, GreaterThan, Equals};
 enum Type {Int, Double, String};
+enum fType {heap, sorted, tree} ;
 
 
 unsigned int Random_Generate();
-
 
 #endif
 
